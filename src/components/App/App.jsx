@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import ContactList from "../ContactList/ContactList.jsx";
 import SearchBox from "../SearchBox/SearchBox.jsx";
 import ContactForm from "../ContactForm/ContactForm.jsx";

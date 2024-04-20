@@ -1,7 +1,8 @@
-import React from "react";
+// import React from "react";
 import css from "../Contact/contact.module.css";
 import { BsTelephone } from "react-icons/bs";
 import { IoIosContact } from "react-icons/io";
+import { string, func } from "prop-types";
 
 const Contact = ({ id, name, number, onDelete }) => {
   return (
@@ -17,6 +18,12 @@ const Contact = ({ id, name, number, onDelete }) => {
       </button>
     </div>
   );
+};
+Contact.propTypes = {
+  id: string.isRequired,
+  name: string.isRequired,
+  number: string.isRequired,
+  onDelete: func.isRequired,
 };
 
 export default Contact;

@@ -1,27 +1,42 @@
-.contactCard {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  max-width: 300px;
-  border: 1px solid #ccc;
+.contactItem {
+  width: 300px;
   padding: 20px;
-  border-radius: 4px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 16px;
+  margin: 0 auto;
+  text-align: center;
 }
 
-.contactCard button {
-  padding: 10px 15px;
-  margin-top: 10px;
+.contactDetails {
+  margin-bottom: 8px;
+}
+
+.contactName {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  text-align: left;
+}
+
+.phoneNumber {
+  font-size: 16px;
+  color: #555;
+  text-align: left;
+}
+
+.deleteButton {
   background-color: #007bff;
   color: white;
   border: none;
+  padding: 8px 16px;
+  font-size: 16px;
   border-radius: 4px;
   cursor: pointer;
+  margin-top: 16px;
 }
 
-.contactCard button:hover {
+.deleteButton:hover {
   background-color: #0056b3;
-}
-
-.contactCard button:focus {
-  outline: none;
 }

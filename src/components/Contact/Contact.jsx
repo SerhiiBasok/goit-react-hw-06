@@ -1,29 +1,34 @@
-// import React from "react";
 import css from "../Contact/contact.module.css";
-import { BsTelephone } from "react-icons/bs";
-import { IoIosContact } from "react-icons/io";
-import { string, func } from "prop-types";
+import PropTypes from "prop-types";
+import { useDispatch } from "react-redux";
+import { deleteContact } from "../../redux/contactsSlice";
 
-const Contact = ({ id, name, number, onDelete }) => {
+const Contact = ({ contact }) => {
+  const dispatch = useDispatch();
+
+  const handleDelete = () => {
+    dispatch(deleteContact(contact.id));
+  };
+
   return (
-    <div className={css.contactCard}>
-      <p>
-        <IoIosContact />: {name}
-      </p>
-      <p>
-        <BsTelephone />: {number}
-      </p>
-      <button type="button" onClick={() => onDelete(id)}>
+    <div className={css.contactItem}>
+      <div className={css.contactDetails}>
+        <p className={css.contactName}>Name: {contact.name}</p>
+        <p className={css.phoneNumber}>Number: {contact.phoneNumber}</p>
+      </div>
+      <button onClick={handleDelete} className={css.deleteButton}>
         Delete
       </button>
     </div>
   );
 };
+
 Contact.propTypes = {
-  id: string.isRequired,
-  name: string.isRequired,
-  number: string.isRequired,
-  onDelete: func.isRequired,
+  contact: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    phoneNumber: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 export default Contact;

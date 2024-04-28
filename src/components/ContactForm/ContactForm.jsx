@@ -1,81 +1,73 @@
-// import React from "react";
-import { Field, Form, Formik, ErrorMessage } from "formik";
-import styles from "../ContactForm/Form.module.css";
-import { nanoid } from "nanoid";
-import * as Yup from "yup";
-import { useDispatch, useSelector } from "react-redux";
-import { addNewContact } from "../../redux/contacts/actions";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { addContact } from "../../redux/contactsSlice";
+import { v4 as uuidv4 } from "uuid";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-const ContactForm = ({ onAdd }) => {
+import css from "../ContactForm/Form.module.css";
+
+const toastStyles = {
+  // Стилі тосту
+  ".Toastify__toast-container": {
+    zIndex: "9999",
+  },
+  ".Toastify__toast--error": {
+    backgroundColor: "#f44336",
+  },
+  ".Toastify__toast--error:hover": {
+    backgroundColor: "#d32f2f",
+  },
+  ".Toastify__toast-body": {
+    fontFamily: "Arial, sans-serif",
+    fontSize: "14px",
+    color: "#fff",
+  },
+};
+
+const ContactsForm = () => {
+  const [name, setName] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const dispatch = useDispatch();
 
-  const handleSubmit = (values, { resetForm, isSubmitting }) => {
-    const newContact = {
-      id: nanoid(),
-      name: values.name,
-      number: values.number,
-    };
-    dispatch({
-      type: "contacts/addContacts",
-      payload: newContact,
-    });
-    resetForm();
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const id = uuidv4();
+
+    if (name.trim() === "" || phoneNumber.trim() === "") {
+      toast.error("Name and phone number are required.");
+    } else {
+      dispatch(addContact({ id, name, phoneNumber }));
+      setName("");
+      setPhoneNumber("");
+    }
   };
 
-  const contacts = useSelector((state) => state.contacts);
-  console.log(contacts);
-
-  const formValidate = Yup.object().shape({
-    name: Yup.string().min(3).max(50).required(),
-    number: Yup.string().min(3).required(),
-  });
-
   return (
-    <Formik
-      initialValues={{ name: "", number: "" }}
-      onSubmit={handleSubmit}
-      validationSchema={formValidate}
-    >
-      {({ isSubmitting }) => (
-        <Form className={styles.contactForm}>
-          <div className={styles.formGroup}>
-            <label htmlFor="name" className={styles.label}>
-              Name:
-            </label>
-            <Field type="text" id="name" name="name" className={styles.input} />
-            <ErrorMessage
-              name="name"
-              component="div"
-              className={styles.errorMessage}
-            />
-          </div>
-          <div className={styles.formGroup}>
-            <label htmlFor="number" className={styles.label}>
-              Number:
-            </label>
-            <Field
-              type="text"
-              id="number"
-              name="number"
-              className={styles.input}
-            />
-            <ErrorMessage
-              name="number"
-              component="div"
-              className={styles.errorMessage}
-            />
-          </div>
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className={styles.button}
-          >
-            Add new Contact
-          </button>
-        </Form>
-      )}
-    </Formik>
+    <div>
+      <ToastContainer style={toastStyles} />
+      <form onSubmit={handleSubmit} className={css.form}>
+        <input
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="Name"
+          className={css.input}
+        />
+        <input
+          type="text"
+          value={phoneNumber}
+          onChange={(e) => setPhoneNumber(e.target.value)}
+          placeholder="Phone Number"
+          className={css.input}
+        />
+        <button type="submit" className={css.btn}>
+          Add Contact
+        </button>
+      </form>
+    </div>
   );
 };
 
-export default ContactForm;
+export default ContactsForm;
